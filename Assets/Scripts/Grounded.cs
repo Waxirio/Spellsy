@@ -19,13 +19,14 @@ public class Grounded : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.collider.tag == "Ground")
+        if (collision.collider.tag == "Ground")
         {
             Player.GetComponent<CharacterController2D>().isGrounded = true;
         }
     }
-    private void OnCollisionExit2D(Collision2D collision){
-        if(collision.collider.tag == "Ground")
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Ground")
         {
             Player.GetComponent<CharacterController2D>().isGrounded = false;
         }
