@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private float moveInput;
     private Rigidbody2D rb;
-    private bool facingRight = true;
+    private bool facingRight = false;
     private bool isGrounded = true;
     private bool isRight = true;
     private bool isLeft = true;
@@ -42,7 +42,9 @@ public class PlayerController : MonoBehaviour
         extraJumps = extraJumpsBase;
         jumpForce = normalJumpForce;
         maxJumpForce = normalJumpForce*2;
+        //Calcul de la vitesse sur glace
         iceSpeed = speed + (speed * iceSlideSpeed);
+        //calcul de la vitesse dans la boue
         mudSpeed = speed/3;
     }
 
@@ -64,7 +66,7 @@ public class PlayerController : MonoBehaviour
     //retourne notre joueur
     void Flip()
     {
-        facingRight = !facingRight;
+        facingRight = !facingRight; //on retourne le joueur
         Vector3 Scaler = transform.localScale;
         Scaler.x *= -1;
         transform.localScale = Scaler;
@@ -86,9 +88,9 @@ public class PlayerController : MonoBehaviour
         }else if(Input.GetKeyDown("space") && extraJumps == 0 && isGrounded == true){ //jump de base
             rb.velocity = new Vector2(0,1) * jumpForce;
         }else if(Input.GetKeyDown("space") && extraJumps == 0 && isLeft == true){ //jump vers la droite
-            rb.velocity = new Vector2(1,1) * jumpForce;
+            rb.velocity = new Vector2(0,1) * jumpForce;
         }else if(Input.GetKeyDown("space") && extraJumps == 0 && isRight == true){//jump vers la gauche
-            rb.velocity = new Vector2(-1,1)* jumpForce;
+            rb.velocity = new Vector2(0,1)* jumpForce;
         }
     }
 
