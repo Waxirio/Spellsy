@@ -8,9 +8,9 @@ public class CharacterController2D : MonoBehaviour
     public bool isLeft = false;
     public float moveSpeed=8f;
 
-    float jumpForce = 6f;
+    float jumpForce = 10f;
     public bool onWallJump = false;
-    float velocityFallMax = 10f;
+    float velocityFallMax = 8f;
 
     void Update(){
         //saut
@@ -33,7 +33,7 @@ public class CharacterController2D : MonoBehaviour
             //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * movement.x, gameObject.GetComponent<Rigidbody2D>().velocity.y);
             if (Mathf.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x) < moveSpeed)
             {
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(moveSpeed * movement.x, 0));
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(moveSpeed*2 * movement.x, 0));
             }
         }
 
@@ -91,10 +91,10 @@ public class CharacterController2D : MonoBehaviour
         else if (Input.GetButtonDown("Jump") && (isRight || isLeft) && !isGrounded)
         {
             if(isRight){
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-jumpForce, jumpForce), ForceMode2D.Impulse);
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(-jumpForce/2, jumpForce), ForceMode2D.Impulse);
             }
             else if(isLeft){
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpForce, jumpForce), ForceMode2D.Impulse);
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(jumpForce/2, jumpForce), ForceMode2D.Impulse);
             }
             onWallJump = true;
         }
