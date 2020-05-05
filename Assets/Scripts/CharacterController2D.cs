@@ -6,39 +6,42 @@ public class CharacterController2D : MonoBehaviour
 	public bool isGrounded = false;
     public bool isRight = false;
     public bool isLeft = false;
-    public float moveSpeed;
+    public float moveSpeed=8f;
 
     float jumpForce = 6f;
     public bool onWallJump = false;
-	void Update(){
+    float velocityFallMax = 10f;
+
+    void Update(){
         //saut
 		Jump();
 
-        //ma vitesse en chute
-        float velocityFall = 8f;
-
         //on défini les deplacement du joueur avec les appuis de touche
         Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
-        //si on est sur un mur a droite ou a gauche alors on reste accroché
-        // if (!onWallJump && (isLeft && (movement.x < 0) || (isRight && (movement.x > 0)))){
-        //     gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x,0f);
-        // }
 
         //vitesse de chute max
-        gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.ClampMagnitude(gameObject.GetComponent<Rigidbody2D>().velocity, velocityFall);
+        gameObject.GetComponent<Rigidbody2D>().velocity = Vector3.ClampMagnitude(gameObject.GetComponent<Rigidbody2D>().velocity, velocityFallMax);
         
         //***** si le personnage arrive dans la limite du terrain il réapparait de l'autre coté *****
         PassVertical();
         PassHorizontal();
 
-        //si la vitesse est négative et qu'on saute alors
-        if (gameObject.GetComponent<Rigidbody2D>().velocity.y <= 0 && onWallJump){
-            onWallJump = false;
-        }
+
         if ( !onWallJump && ( (movement.x > 0) && !isRight) || ((movement.x < 0) && !isLeft))
         {
             //transform.position += movement * Time.deltaTime * moveSpeed;
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * movement.x, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+            //gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed * movement.x, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+            if (Mathf.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x) < moveSpeed)
+            {
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(moveSpeed * movement.x, 0));
+            }
+        }
+
+        //si la vitesse est négative et qu'on saute alors
+        if (onWallJump)     Debug.Log(gameObject.GetComponent<Rigidbody2D>().velocity.y);
+        if (gameObject.GetComponent<Rigidbody2D>().velocity.y <= 0 && onWallJump)
+        {
+            onWallJump = false;
         }
 
     }
